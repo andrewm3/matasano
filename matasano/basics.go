@@ -38,3 +38,14 @@ func FixedXOR(a, b string) (string, error) {
 
 	return hex.EncodeToString(xor), nil
 }
+
+func SingleByteXOR(s string, b byte) (string, error) {
+	decoded, err := hex.DecodeString(s)
+	xor := make([]byte, len(decoded))
+
+	for i, c := range decoded {
+		xor[i] = c ^ b
+	}
+
+	return string(xor), err
+}
