@@ -14,6 +14,21 @@ func TestHexToBase64(t *testing.T) {
 		t.Error("Error occured during conversion")
 	}
 	if result != should {
-		t.Error("Expected ", should, ", not ", result)
+		t.Error("Expected", should, "not", result)
+	}
+}
+
+func TestFixedXOR(t *testing.T) {
+	input_a := "1c0111001f010100061a024b53535009181c"
+	input_b := "686974207468652062756c6c277320657965"
+	should := "746865206b696420646f6e277420706c6179"
+
+	result, err := FixedXOR(input_a, input_b)
+
+	if err != nil {
+		t.Error("Error occured during function")
+	}
+	if result != should {
+		t.Error("Expected", should, "not", result)
 	}
 }
