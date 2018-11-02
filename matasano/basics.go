@@ -1,3 +1,5 @@
+// Package matasano contains utilities to solve the Matasano Crypto Challenges
+// This file covers the basics.
 package matasano
 
 import (
@@ -6,6 +8,7 @@ import (
 	"errors"
 )
 
+// HexToBase64 converts a hex encoded string to a base64 encoded one.
 func HexToBase64(s string) (string, error) {
 	bytes, err := hex.DecodeString(s)
 
@@ -16,29 +19,31 @@ func HexToBase64(s string) (string, error) {
 	return base64.StdEncoding.EncodeToString(bytes), nil
 }
 
+// FixedXOR returns the XOR of two strings of the same length.
 func FixedXOR(a, b string) (string, error) {
-	decoded_a, err_a := hex.DecodeString(a)
-	decoded_b, err_b := hex.DecodeString(b)
+	decodedA, errA := hex.DecodeString(a)
+	decodedB, errB := hex.DecodeString(b)
 
-	if err_a != nil {
-		return "", err_a
+	if errA != nil {
+		return "", errA
 	}
-	if err_b != nil {
-		return "", err_b
+	if errB != nil {
+		return "", errB
 	}
-	if len(decoded_a) != len(decoded_b) {
+	if len(decodedA) != len(decodedB) {
 		return "", errors.New("The given strings are not of the same length")
 	}
 
-	xor := make([]byte, len(decoded_a))
+	xor := make([]byte, len(decodedA))
 
-	for i := range decoded_a {
-		xor[i] = decoded_a[i] ^ decoded_b[i]
+	for i := range decodedA {
+		xor[i] = decodedA[i] ^ decodedB[i]
 	}
 
 	return hex.EncodeToString(xor), nil
 }
 
+// SingleByteXOR takes a string and XOR's it against a single character.
 func SingleByteXOR(s string, b byte) (string, error) {
 	decoded, err := hex.DecodeString(s)
 	xor := make([]byte, len(decoded))

@@ -19,11 +19,11 @@ func TestHexToBase64(t *testing.T) {
 }
 
 func TestFixedXOR(t *testing.T) {
-	input_a := "1c0111001f010100061a024b53535009181c"
-	input_b := "686974207468652062756c6c277320657965"
+	inputA := "1c0111001f010100061a024b53535009181c"
+	inputB := "686974207468652062756c6c277320657965"
 	should := "746865206b696420646f6e277420706c6179"
 
-	result, err := FixedXOR(input_a, input_b)
+	result, err := FixedXOR(inputA, inputB)
 
 	if err != nil {
 		t.Error("Error occured during function")
