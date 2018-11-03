@@ -32,3 +32,18 @@ func TestFixedXOR(t *testing.T) {
 		t.Error("Expected", should, "not", result)
 	}
 }
+
+func TestSingleByteXOR(t *testing.T) {
+	var key byte = 'X'
+	input := "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+	should := "Cooking MC's like a pound of bacon"
+
+	result, err := SingleByteXOR(input, key)
+
+	if err != nil {
+		t.Error("Error occured during function")
+	}
+	if result != should {
+		t.Error("Expected", should, "not", result)
+	}
+}
