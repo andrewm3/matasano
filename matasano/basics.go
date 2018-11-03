@@ -56,6 +56,22 @@ func SingleByteXOR(s string, b byte) (string, error) {
 	return string(xor), err
 }
 
+// RepeatingKeyXOR takes a string and XOR's it against a repeating key.
+func RepeatingKeyXOR(s []byte, key []byte) []byte {
+	xor := make([]byte, len(s))
+
+	var j int
+
+	for i, c := range s {
+		xor[i] = c ^ key[j]
+		if j++; j >= len(key) {
+			j = 0
+		}
+	}
+
+	return xor
+}
+
 // Englishness calculates the likelihood that the given text is an English phrase.
 func Englishness(s string) float64 {
 	// Frequencies sourced from https://en.wikipedia.org/wiki/Letter_frequency

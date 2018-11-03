@@ -1,6 +1,7 @@
 package matasano
 
 import (
+	"encoding/hex"
 	"testing"
 )
 
@@ -43,6 +44,19 @@ func TestSingleByteXOR(t *testing.T) {
 	if err != nil {
 		t.Error("Error occured during function")
 	}
+	if result != should {
+		t.Error("Expected", should, "not", result)
+	}
+}
+
+func TestRepeatingKeyXOR(t *testing.T) {
+	input := "Burning 'em, if you ain't quick and nimble\nI go crazy when I hear a cymbal"
+	should := "0b3637272a2b2e63622c2e69692a23693a2a3c6324202d623d63343c2a26226324272765272" +
+		"a282b2f20430a652e2c652a3124333a653e2b2027630c692b20283165286326302e27282f"
+	key := "ICE"
+
+	result := hex.EncodeToString(RepeatingKeyXOR([]byte(input), []byte(key)))
+
 	if result != should {
 		t.Error("Expected", should, "not", result)
 	}
