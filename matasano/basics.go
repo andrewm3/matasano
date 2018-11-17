@@ -9,6 +9,12 @@ import (
 	"strings"
 )
 
+type Decrypted struct {
+	key         string
+	phrase      string
+	englishness float64
+}
+
 // HexToBase64 converts a hex encoded string to a base64 encoded one.
 func HexToBase64(s string) (string, error) {
 	bytes, err := hex.DecodeString(s)
@@ -92,4 +98,24 @@ func Englishness(s string) float64 {
 	}
 
 	return sum
+}
+
+func DecryptSingleByteXOR(s string) (Decrypted, error) {
+	best := Decrypted{}
+
+	for i := 0; i < 256; i++ {
+		xor, err := SingleByteXOR(s, byte(i))
+		if err != nil {
+			return Decrypted{}, err
+		} else {
+			englishness := Englishness(xor)
+			if englishness > best.englishness {
+				best.englishness = englishness
+				best.phrase = xor
+				best.key = string(byte(i))
+			}
+		}
+	}
+
+	return best, nil
 }

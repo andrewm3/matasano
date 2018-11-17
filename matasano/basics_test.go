@@ -12,7 +12,7 @@ func TestHexToBase64(t *testing.T) {
 	result, err := HexToBase64(input)
 
 	if err != nil {
-		t.Error("Error occured during conversion")
+		t.Error("Error occurred during conversion")
 	}
 	if result != should {
 		t.Error("Expected", should, "not", result)
@@ -27,7 +27,7 @@ func TestFixedXOR(t *testing.T) {
 	result, err := FixedXOR(inputA, inputB)
 
 	if err != nil {
-		t.Error("Error occured during function")
+		t.Error("Error occurred during function")
 	}
 	if result != should {
 		t.Error("Expected", should, "not", result)
@@ -42,7 +42,7 @@ func TestSingleByteXOR(t *testing.T) {
 	result, err := SingleByteXOR(input, key)
 
 	if err != nil {
-		t.Error("Error occured during function")
+		t.Error("Error occurred during function")
 	}
 	if result != should {
 		t.Error("Expected", should, "not", result)
@@ -59,5 +59,20 @@ func TestRepeatingKeyXOR(t *testing.T) {
 
 	if result != should {
 		t.Error("Expected", should, "not", result)
+	}
+}
+
+func TestEnglishness(t *testing.T) {
+}
+
+func TestDecryptSingleByteXOR(t *testing.T) {
+	hex := "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+	should := "Cooking MC's like a pound of bacon"
+	decrypted, err := DecryptSingleByteXOR(hex)
+	if err != nil {
+		t.Error("error occurred during function")
+	}
+	if decrypted.phrase != should {
+		t.Error("Expected", should, "not", decrypted.phrase)
 	}
 }
