@@ -100,20 +100,25 @@ func Englishness(s string) float64 {
 	return sum
 }
 
-func DecryptSingleByteXOR(s string) (Decrypted, error) {
-	best := Decrypted{}
+// DecryptSingleByteXOR takes an encrypted string and attempts to find the key that decrypts it
+// Benchmarks showed that using channels decreased runtime by 45%
+func DecryptSingleByteXOR(s string) (best Decrypted, err error) {
+	bytes := 256
+	ch := make(chan Decrypted)
 
-	for i := 0; i < 256; i++ {
-		xor, err := SingleByteXOR(s, byte(i))
-		if err != nil {
-			return Decrypted{}, err
-		} else {
-			englishness := Englishness(xor)
-			if englishness > best.englishness {
-				best.englishness = englishness
-				best.phrase = xor
-				best.key = string(byte(i))
-			}
+	for i := 0; i < bytes; i++ {
+		go func(b byte) {
+			xor, _ := SingleByteXOR(s, b)
+			ch <- Decrypted{string(b), xor, Englishness(xor)}
+		}(byte(i))
+	}
+	if err != nil {
+		return Decrypted{}, err
+	}
+	for i := 0; i < bytes; i++ {
+		decrypted := <-ch
+		if decrypted.englishness > best.englishness {
+			best = decrypted
 		}
 	}
 

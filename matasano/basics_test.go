@@ -76,3 +76,10 @@ func TestDecryptSingleByteXOR(t *testing.T) {
 		t.Error("Expected", should, "not", decrypted.phrase)
 	}
 }
+
+func BenchmarkDecryptSingleByteXOR(b *testing.B) {
+	hex := "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+	for n := 0; n < b.N; n++ {
+		DecryptSingleByteXOR(hex)
+	}
+}
