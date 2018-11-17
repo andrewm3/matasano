@@ -3,9 +3,11 @@
 package matasano
 
 import (
+	"bufio"
 	"encoding/base64"
 	"encoding/hex"
 	"errors"
+	"io"
 	"strings"
 )
 
@@ -122,5 +124,21 @@ func DecryptSingleByteXOR(s string) (best Decrypted, err error) {
 		}
 	}
 
+	return best, nil
+}
+
+// DetectSingleByteXOR takes an io.Reader and reads line by line to find a line that has
+// likely been encrypted with a single-byte XOR
+func DetectSingleByteXOR(r io.Reader) (best Decrypted, err error) {
+	scanner := bufio.NewScanner(r)
+	for scanner.Scan() {
+		decrypted, err := DecryptSingleByteXOR(scanner.Text())
+		if err != nil {
+			return Decrypted{}, err
+		}
+		if decrypted.englishness > best.englishness {
+			best = decrypted
+		}
+	}
 	return best, nil
 }

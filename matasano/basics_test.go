@@ -2,6 +2,7 @@ package matasano
 
 import (
 	"encoding/hex"
+	"os"
 	"testing"
 )
 
@@ -81,5 +82,18 @@ func BenchmarkDecryptSingleByteXOR(b *testing.B) {
 	hex := "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
 	for n := 0; n < b.N; n++ {
 		DecryptSingleByteXOR(hex)
+	}
+}
+
+func TestDetectSingleByteXOR(t *testing.T) {
+	file, err := os.Open("../resources/set-1-challenge-4.txt")
+	defer file.Close()
+	should := "Now that the party is jumping\n"
+	result, err := DetectSingleByteXOR(file)
+	if err != nil {
+		t.Error("error occurred during function")
+	}
+	if result.phrase != should {
+		t.Error("Expected", should, "not", result.phrase)
 	}
 }
