@@ -97,3 +97,14 @@ func TestDetectSingleByteXOR(t *testing.T) {
 		t.Error("Expected", should, "not", result.phrase)
 	}
 }
+
+func TestHammingDistance(t *testing.T) {
+	should := 37
+	result, err := HammingDistance("this is a test", "wokka wokka!!!")
+	if err != nil {
+		t.Error("error occurred during function")
+	}
+	if result != should {
+		t.Error("expected", should, "not", result)
+	}
+}

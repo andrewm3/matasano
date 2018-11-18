@@ -142,3 +142,21 @@ func DetectSingleByteXOR(r io.Reader) (best Decrypted, err error) {
 	}
 	return best, nil
 }
+
+// HammingDistance computes the edit distance between two strings at the bit level
+func HammingDistance(strA, strB string) (dist int, err error) {
+	a, b := []byte(strA), []byte(strB)
+	if len(a) != len(b) {
+		return 0, errors.New("The given strings are not of the same length")
+	}
+
+	for i := 0; i < len(a); i++ {
+		for j := uint(0); j < 8; j++ {
+			mask := byte(1 << j)
+			if (a[i] & mask) != (b[i] & mask) {
+				dist++
+			}
+		}
+	}
+	return dist, nil
+}
